@@ -5,12 +5,12 @@
 #SBATCH --mem=8G
 #SBATCH --job-name=nextflow
 #SBATCH --mail-type=FAIL,END
-#SBATCH --mail-user=jzinno@nygenome.org
+#SBATCH --mail-user=R.Hagelaar@prinsesmaximacentrum.nl
 #SBATCH --output=cloudCellphy-log_%j.out
 
 
-module load singularity
-module load Nextflow/24.04.2
+#module load singularity
+#module load Nextflow/24.10.5
 
 if [ ! -d $PWD/nxf-scratch ]; then
     mkdir $PWD/nxf-scratch
@@ -18,4 +18,4 @@ fi
 
 export NXF_TEMP=$PWD/nxf-scratch
 
-nextflow workflows/cloudCellphy.nf -resume
+nextflow workflows/cloudCellphy.nf -profile gcp -c run.config -resume

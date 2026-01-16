@@ -1,13 +1,13 @@
 include { BootstrapsCellPhy;SupportCellPhy } from '../modules/phylo'
 
 workflow {
-    Channel
+    channel
         .fromPath( params.joint_vcf )
         .set  { joint_vcf }
-    Channel
+    channel
         .fromPath( params.best_tree )
         .set  { best_tree }
-    Channel
+    channel
         .of( 1..params.n_bootstrap_search )
         .set { bootstrap_idx }
     joint_vcf

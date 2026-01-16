@@ -1,13 +1,13 @@
 include { MLSearchCellPhy;BootstrapsCellPhy;SupportCellPhy } from '../modules/phylo'
 
 workflow {
-    Channel
+    channel
         .fromPath( params.joint_vcf )
         .set  { joint_vcf }
-    Channel
+    channel
         .of( 1..params.n_tree_search )
         .set { tree_search_idx }
-    Channel
+    channel
         .of( 1..params.n_bootstrap_search )
         .set { bootstrap_idx }
     MLSearchCellPhy( joint_vcf, tree_search_idx )
