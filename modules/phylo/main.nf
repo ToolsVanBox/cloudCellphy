@@ -12,8 +12,7 @@ process MLSearchCellPhy {
     each tree_search_idx
 
     output:
-    tuple path("${phylo_vcf.simpleName}.CellPhy.${tree_search_idx}.raxml.bestTree"), path("loglikelihood.${tree_search_idx}.txt")
-
+    tuple path("${phylo_vcf.simpleName}.CellPhy.${tree_search_idx}.raxml.bestTree"), path("loglikelihood.${tree_search_idx}.txt"), path("${phylo_vcf.simpleName}.CellPhy.${tree_search_idx}.raxml.bestModel")
 
     script:
     """

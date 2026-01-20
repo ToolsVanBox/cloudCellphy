@@ -13,7 +13,7 @@ workflow {
     MLSearchCellPhy( joint_vcf, tree_search_idx )
     MLSearchCellPhy
         .out
-        .map { tree, tree_ll -> [ tree, tree_ll.text.toFloat() ]}
+        .map { tree, tree_ll, tree_bm -> [ tree, tree_ll.text.toFloat() ]}
         .toSortedList { a, b -> b[1] <=> a[1] }
         .map { it[0][0] }
         .set { best_tree }
