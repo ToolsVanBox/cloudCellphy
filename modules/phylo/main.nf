@@ -113,3 +113,33 @@ process SupportCellPhy {
     """
 
 }
+
+process MutMapCellPhy {
+    tag "Mutmap"
+
+    input: 
+    path(phylo_vcf)
+    path(best_tree)
+    path(best_model)
+        
+    output:
+    path("${best_tree.simpleName}.CellPhy.raxml.mutationMapList")
+    path("${best_tree.simpleName}.CellPhy.raxml.mutationMapTree")
+    path("${best_tree.simpleName}.CellPhy.raxml.startTree")
+    
+    script:
+    """
+
+    raxml-ng-cellphy-linux \
+        --mutmap \
+        --msa ${phylo_vcf} \
+        --msa-format VCF \
+        --model ${best_model} \
+        --tree ${best_tree} \
+        --prefix ${best_tree.simpleName}.CellPhy \
+        --threads ${task.cpus} \
+        --opt-branches off
+
+    """
+
+}
