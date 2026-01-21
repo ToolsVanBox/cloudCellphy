@@ -5,6 +5,10 @@ process MLSearchCellPhy {
     }
     tag "tree-search"
 
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'docker://docker.io/zinno/cellphy:latest':
+        'europe-west4-docker.pkg.dev/pmc-gcp-box-d-pip-development/pipeline-containers/cloudcellphy@sha256:27dbdaa90d9eb69b86181f54205198e680824881bd206468579d01ad0fca25ba' }"
+
     publishDir "${params.out}/cellphy/mltrees", mode: 'symlink'
 
     input:
@@ -47,6 +51,10 @@ process BootstrapsCellPhy {
     }
     tag "tree-validation"
 
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'docker://docker.io/zinno/cellphy:latest':
+        'europe-west4-docker.pkg.dev/pmc-gcp-box-d-pip-development/pipeline-containers/cloudcellphy@sha256:27dbdaa90d9eb69b86181f54205198e680824881bd206468579d01ad0fca25ba' }"
+
     publishDir "${params.out}/cellphy/bootstraps", mode: 'symlink'
 
     input:
@@ -85,6 +93,10 @@ process SupportCellPhy {
     }
     tag "tree-support"
 
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'docker://docker.io/zinno/cellphy:latest':
+        'europe-west4-docker.pkg.dev/pmc-gcp-box-d-pip-development/pipeline-containers/cloudcellphy@sha256:27dbdaa90d9eb69b86181f54205198e680824881bd206468579d01ad0fca25ba' }"
+
     publishDir "${params.out}/cellphy/support", mode: 'symlink'
 
     input:
@@ -116,6 +128,10 @@ process SupportCellPhy {
 
 process MutMapCellPhy {
     tag "Mutmap"
+
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'docker://docker.io/zinno/cellphy:latest':
+        'europe-west4-docker.pkg.dev/pmc-gcp-box-d-pip-development/pipeline-containers/cloudcellphy@sha256:27dbdaa90d9eb69b86181f54205198e680824881bd206468579d01ad0fca25ba' }"
 
     input: 
     path(phylo_vcf)
