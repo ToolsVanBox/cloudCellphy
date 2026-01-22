@@ -3,6 +3,7 @@ nextflow.enable.dsl=2
 include { MLSearchCellPhy;BootstrapsCellPhy;SupportCellPhy;MutMapCellPhy } from '../modules/phylo'
 include { SupportMap } from '../modules/CellPhyWrapper/SupportMap'
 include { CellPhyPlotTree } from '../modules/CellPhyWrapper/CellPhyPlotTree'
+include { UpsetPlot } from '../modules/CellPhyWrapper/UpsetPlot'
 
 workflow {
     channel
@@ -69,12 +70,15 @@ workflow {
         .combine(percent_idx)
         .set {input_CellPhyPlotTree}
     CellPhyPlotTree(
-        input_CellPhyPlotTree, 
+        joint_vcf, 
+        percent_idx,
         MutMapCellPhy.out.mutationMapList.first(),
         MutMapCellPhy.out.mutationMapTree.first(),
         MutMapCellPhy.out.startTree.first(),
         SupportCellPhy.out.supportTree.first()
         )
     
-    
+
+    // Create Upset plots 
+    UpsetPlot(joint_vcf)
 }

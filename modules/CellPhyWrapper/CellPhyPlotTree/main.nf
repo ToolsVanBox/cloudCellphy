@@ -8,10 +8,10 @@ process CellPhyPlotTree {
     publishDir "${params.out}/cellphy/CellPhyPlotTree", mode: 'copy'
 
     input:
-        tuple( 
-            path(vcfInput), 
-            val(percent_idx) 
-        )
+        //tuple( 
+        path(vcfInput)
+        each(percent_idx) 
+        //)
         path(mutationMapList)
         path(mutationMapTree)
         path(startTree)
@@ -26,7 +26,7 @@ process CellPhyPlotTree {
         def PTATODIR = params.ptatodir
         def OUTGROUP = params.outgroup
         def PREFIX = params.sample_id
-        
+
         """
         Rscript --vanilla /usr/local/bin/cellPhyPlotTree.R . ${vcfInput} ${PTATODIR} ${OUTGROUP} ${percent_idx} ${PREFIX}
         """
