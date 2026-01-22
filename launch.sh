@@ -18,4 +18,4 @@ fi
 
 export NXF_TEMP=$PWD/nxf-scratch
 
-nextflow workflows/cloudCellphy.nf -profile hpc -c configs/run.config -resume
+nextflow workflows/cloudCellphy.nf -profile gcp -c configs/run.config -resume
