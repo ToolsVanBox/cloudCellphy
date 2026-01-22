@@ -9,7 +9,7 @@ process MLSearchCellPhy {
         'docker://docker.io/zinno/cellphy:latest':
         'europe-west4-docker.pkg.dev/pmc-gcp-box-d-pip-development/pipeline-containers/cloudcellphy@sha256:27dbdaa90d9eb69b86181f54205198e680824881bd206468579d01ad0fca25ba' }"
 
-    publishDir "${params.out}/cellphy/mltrees", mode: 'symlink'
+    publishDir "${params.out}/cellphy/mltrees", mode: 'copy'
 
     input:
     path(phylo_vcf)
@@ -55,13 +55,13 @@ process BootstrapsCellPhy {
         'docker://docker.io/zinno/cellphy:latest':
         'europe-west4-docker.pkg.dev/pmc-gcp-box-d-pip-development/pipeline-containers/cloudcellphy@sha256:27dbdaa90d9eb69b86181f54205198e680824881bd206468579d01ad0fca25ba' }"
 
-    publishDir "${params.out}/cellphy/bootstraps", mode: 'symlink'
+    publishDir "${params.out}/cellphy/bootstraps", mode: 'copy'
 
     input:
     tuple path(phylo_vcf), path(best_tree), val(bootstrap_search_idx)
 
     output:
-    path("${phylo_vcf.simpleName}.CellPhy.${bootstrap_search_idx}.raxml.bootstraps")
+    path("${phylo_vcf.simpleName}.CellPhy.${bootstrap_search_idx}.raxml.bootstraps"), emit: bootstrapTree
 
 
     script:
@@ -97,14 +97,14 @@ process SupportCellPhy {
         'docker://docker.io/zinno/cellphy:latest':
         'europe-west4-docker.pkg.dev/pmc-gcp-box-d-pip-development/pipeline-containers/cloudcellphy@sha256:27dbdaa90d9eb69b86181f54205198e680824881bd206468579d01ad0fca25ba' }"
 
-    publishDir "${params.out}/cellphy/support", mode: 'symlink'
+    publishDir "${params.out}/cellphy/support", mode: 'copy'
 
     input:
     path(best_tree)
     path(all_bootstraps)
 
     output:
-    path("${best_tree.simpleName}.CellPhy.raxml.support")
+    path("${best_tree.simpleName}.CellPhy.raxml.support"),  emit: supportTree
 
 
     script:
@@ -133,15 +133,17 @@ process MutMapCellPhy {
         'docker://docker.io/zinno/cellphy:latest':
         'europe-west4-docker.pkg.dev/pmc-gcp-box-d-pip-development/pipeline-containers/cloudcellphy@sha256:27dbdaa90d9eb69b86181f54205198e680824881bd206468579d01ad0fca25ba' }"
 
+    publishDir "${params.out}/cellphy/MutMap", mode: 'copy'
+
     input: 
     path(phylo_vcf)
     path(best_tree)
     path(best_model)
         
     output:
-    path("${best_tree.simpleName}.CellPhy.raxml.mutationMapList")
-    path("${best_tree.simpleName}.CellPhy.raxml.mutationMapTree")
-    path("${best_tree.simpleName}.CellPhy.raxml.startTree")
+    path("${best_tree.simpleName}.CellPhy.raxml.mutationMapList"),  emit: mutationMapList
+    path("${best_tree.simpleName}.CellPhy.raxml.mutationMapTree"),  emit: mutationMapTree
+    path("${best_tree.simpleName}.CellPhy.raxml.startTree"),        emit: startTree
     
     script:
     """
