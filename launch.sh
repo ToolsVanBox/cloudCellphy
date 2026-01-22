@@ -9,8 +9,8 @@
 #SBATCH --output=cloudCellphy-log_%j.out
 
 
-module load java
-module load nextflow/24.10.5
+#module load java
+#module load nextflow/24.10.5
 
 if [ ! -d $PWD/nxf-scratch ]; then
     mkdir $PWD/nxf-scratch
