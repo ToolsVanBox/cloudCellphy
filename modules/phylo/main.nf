@@ -16,8 +16,12 @@ process MLSearchCellPhy {
     each tree_search_idx
 
     output:
-    tuple path("${phylo_vcf.simpleName}.CellPhy.${tree_search_idx}.raxml.bestTree"), path("loglikelihood.${tree_search_idx}.txt"), path("${phylo_vcf.simpleName}.CellPhy.${tree_search_idx}.raxml.bestModel")
-
+    tuple (
+        path("${phylo_vcf.simpleName}.Support.${tree_search_idx}.raxml.bestTree"), 
+        path("loglikelihood.${tree_search_idx}.txt"), 
+        path("${phylo_vcf.simpleName}.Support.${tree_search_idx}.raxml.bestModel")
+    )
+    
     script:
     """
     raxml-ng-cellphy-linux \
@@ -28,17 +32,17 @@ process MLSearchCellPhy {
         --msa-format VCF \
         --prob-msa ${params.prob_msa} \
         --threads ${task.cpus} \
-        --prefix ${phylo_vcf.simpleName}.CellPhy.${tree_search_idx} \
+        --prefix ${phylo_vcf.simpleName}.Support.${tree_search_idx} \
         --tree ${params.start_tree_type}{1} \
         --lh-epsilon ${params.lh_epsilon} \
 
-    loglikelihood=\$(grep "Final LogLikelihood" ${phylo_vcf.simpleName}.CellPhy.${tree_search_idx}.raxml.log | awk '{print \$3}')
+    loglikelihood=\$(grep "Final LogLikelihood" ${phylo_vcf.simpleName}.Support.${tree_search_idx}.raxml.log | awk '{print \$3}')
     echo \$loglikelihood > loglikelihood.${tree_search_idx}.txt
 
     """
     stub:
     """
-    touch ${phylo_vcf.simpleName}.CellPhy.${tree_search_idx}.raxml.bestTree
+    touch ${phylo_vcf.simpleName}.Support.${tree_search_idx}.raxml.bestTree
     awk -v seed=\$RANDOM 'BEGIN{srand(seed);print -rand()}' > loglikelihood.${tree_search_idx}.txt
     """
 
@@ -61,7 +65,7 @@ process BootstrapsCellPhy {
     tuple path(phylo_vcf), path(best_tree), val(bootstrap_search_idx)
 
     output:
-    path("${phylo_vcf.simpleName}.CellPhy.${bootstrap_search_idx}.raxml.bootstraps"), emit: bootstrapTree
+    path("${phylo_vcf.simpleName}.Support.${bootstrap_search_idx}.raxml.bootstraps"), emit: bootstrapTree
 
 
     script:
@@ -73,7 +77,7 @@ process BootstrapsCellPhy {
         --model ${params.evo_model} \
         --msa-format VCF \
         --threads ${task.cpus} \
-        --prefix ${phylo_vcf.simpleName}.CellPhy.${bootstrap_search_idx} \
+        --prefix ${phylo_vcf.simpleName}.Support.${bootstrap_search_idx} \
         --bs-trees ${params.bs_trees_per_job} \
         --bs-metric ${params.bs_metric} \
 
@@ -104,7 +108,7 @@ process SupportCellPhy {
     path(all_bootstraps)
 
     output:
-    path("${best_tree.simpleName}.CellPhy.raxml.support"),  emit: supportTree
+    path("${best_tree.simpleName}.Support.raxml.support"),  emit: supportTree
 
 
     script:
@@ -114,14 +118,14 @@ process SupportCellPhy {
         --support \
         --threads ${task.cpus} \
         --tree ${best_tree} \
-        --prefix ${best_tree.simpleName}.CellPhy \
+        --prefix ${best_tree.simpleName}.Support \
         --bs-trees ${all_bootstraps} \
 
 
     """
     stub:
     """
-    touch ${best_tree.simpleName}.CellPhy.raxml.support
+    touch ${best_tree.simpleName}.Support.raxml.support
     """
 
 }
@@ -141,9 +145,9 @@ process MutMapCellPhy {
     path(best_model)
         
     output:
-    path("${best_tree.simpleName}.CellPhy.raxml.mutationMapList"),  emit: mutationMapList
-    path("${best_tree.simpleName}.CellPhy.raxml.mutationMapTree"),  emit: mutationMapTree
-    path("${best_tree.simpleName}.CellPhy.raxml.startTree"),        emit: startTree
+    path("${best_tree.simpleName}.Support.raxml.mutationMapList"),  emit: mutationMapList
+    path("${best_tree.simpleName}.Support.raxml.mutationMapTree"),  emit: mutationMapTree
+    path("${best_tree.simpleName}.Support.raxml.startTree"),        emit: startTree
     
     script:
     """
@@ -154,7 +158,7 @@ process MutMapCellPhy {
         --msa-format VCF \
         --model ${best_model} \
         --tree ${best_tree} \
-        --prefix ${best_tree.simpleName}.CellPhy \
+        --prefix ${best_tree.simpleName}.Support \
         --threads ${task.cpus} \
         --opt-branches off
 

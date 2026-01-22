@@ -1,5 +1,8 @@
+nextflow.enable.dsl=2
+
 include { MLSearchCellPhy;BootstrapsCellPhy;SupportCellPhy;MutMapCellPhy } from '../modules/phylo'
 include { SupportMap } from '../modules/CellPhyWrapper/SupportMap'
+include { CellPhyPlotTree } from '../modules/CellPhyWrapper/CellPhyPlotTree'
 
 workflow {
     channel
@@ -49,10 +52,29 @@ workflow {
     // Map mutations to the tree 
     MutMapCellPhy( joint_vcf, best_tree, best_model)
 
+
     // Create support map tree 
     SupportCellPhy
         .out
         .set{SupportMapInput}
     SupportMap(SupportMapInput, params.outgroup)
+
+
+    // Create tree with mutations correctly assigned to branches 
+    channel
+        .of( (1..10))
+        .map { it /10 }
+        .set{ percent_idx }
+    joint_vcf
+        .combine(percent_idx)
+        .set {input_CellPhyPlotTree}
+    CellPhyPlotTree(
+        input_CellPhyPlotTree, 
+        MutMapCellPhy.out.mutationMapList.first(),
+        MutMapCellPhy.out.mutationMapTree.first(),
+        MutMapCellPhy.out.startTree.first(),
+        SupportCellPhy.out.supportTree.first()
+        )
+    
     
 }
