@@ -80,5 +80,8 @@ workflow {
     
 
     // Create Upset plots 
-    UpsetPlot(joint_vcf)
+    if (params.run_upset) {
+        UpsetPlot(joint_vcf)
+    }
+    
 }
