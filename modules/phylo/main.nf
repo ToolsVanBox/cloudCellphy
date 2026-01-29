@@ -1,8 +1,8 @@
 process MLSearchCellPhy {
-    if ("${workflow.stubRun}" == "false") {
+    /*if ("${workflow.stubRun}" == "false") {
         memory params.tree_memory
         cpus params.tree_threads
-    }
+    }*/
     tag "tree-search"
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -21,7 +21,7 @@ process MLSearchCellPhy {
         path("loglikelihood.${tree_search_idx}.txt"), 
         path("${phylo_vcf.simpleName}.Support.${tree_search_idx}.raxml.bestModel")
     )
-    
+
     script:
     """
     raxml-ng-cellphy-linux \
@@ -49,10 +49,10 @@ process MLSearchCellPhy {
 }
 
 process BootstrapsCellPhy {
-    if ("${workflow.stubRun}" == "false") {
+    /*if ("${workflow.stubRun}" == "false") {
         memory params.tree_memory
         cpus params.tree_threads
-    }
+    }*/
     tag "tree-validation"
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -91,10 +91,10 @@ process BootstrapsCellPhy {
 }
 
 process SupportCellPhy {
-    if ("${workflow.stubRun}" == "false") {
+    /*if ("${workflow.stubRun}" == "false") {
         memory '8 GB'
         cpus 4
-    }
+    }*/
     tag "tree-support"
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
