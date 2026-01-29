@@ -1,9 +1,5 @@
 process MLSearchCellPhy {
-    /*if ("${workflow.stubRun}" == "false") {
-        memory params.tree_memory
-        cpus params.tree_threads
-    }*/
-    tag "tree-search"
+    tag "$params.sample_id"
     label 'process_low'
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -50,11 +46,7 @@ process MLSearchCellPhy {
 }
 
 process BootstrapsCellPhy {
-    /*if ("${workflow.stubRun}" == "false") {
-        memory params.tree_memory
-        cpus params.tree_threads
-    }*/
-    tag "tree-validation"
+    tag "$params.sample_id"
     label 'process_medium'
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -93,11 +85,7 @@ process BootstrapsCellPhy {
 }
 
 process SupportCellPhy {
-    /*if ("${workflow.stubRun}" == "false") {
-        memory '8 GB'
-        cpus 4
-    }*/
-    tag "tree-support"
+    tag "$params.sample_id"
     label 'process_low'
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -134,7 +122,7 @@ process SupportCellPhy {
 }
 
 process MutMapCellPhy {
-    tag "Mutmap"
+    tag "$params.sample_id"
     label 'process_medium'
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?

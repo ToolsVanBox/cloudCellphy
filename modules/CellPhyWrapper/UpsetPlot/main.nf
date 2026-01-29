@@ -1,5 +1,5 @@
 process UpsetPlot {
-    tag "UpsetPlot"
+    tag "$params.sample_id"
     label 'process_single'
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
