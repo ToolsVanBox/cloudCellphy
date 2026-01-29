@@ -4,6 +4,7 @@ process MLSearchCellPhy {
         cpus params.tree_threads
     }*/
     tag "tree-search"
+    label 'process_low'
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'docker://docker.io/zinno/cellphy:latest':
@@ -54,6 +55,7 @@ process BootstrapsCellPhy {
         cpus params.tree_threads
     }*/
     tag "tree-validation"
+    label 'process_medium'
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'docker://docker.io/zinno/cellphy:latest':
@@ -96,6 +98,7 @@ process SupportCellPhy {
         cpus 4
     }*/
     tag "tree-support"
+    label 'process_low'
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'docker://docker.io/zinno/cellphy:latest':
@@ -132,6 +135,7 @@ process SupportCellPhy {
 
 process MutMapCellPhy {
     tag "Mutmap"
+    label 'process_medium'
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'docker://docker.io/zinno/cellphy:latest':

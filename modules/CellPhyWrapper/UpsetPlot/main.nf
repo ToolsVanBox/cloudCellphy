@@ -1,5 +1,6 @@
 process UpsetPlot {
     tag "UpsetPlot"
+    label 'process_single'
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'docker://docker.io/vanboxtelbioinformatics/cellphywrapper:1.0.1':
