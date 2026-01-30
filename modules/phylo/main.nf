@@ -1,5 +1,5 @@
 process MLSearchCellPhy {
-    tag "$params.sample_id"
+    tag "${params.sample_id}"
     label 'process_low'
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -46,7 +46,7 @@ process MLSearchCellPhy {
 }
 
 process BootstrapsCellPhy {
-    tag "$params.sample_id"
+    tag "${params.sample_id}"
     label 'process_medium'
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -85,7 +85,7 @@ process BootstrapsCellPhy {
 }
 
 process SupportCellPhy {
-    tag "$params.sample_id"
+    tag "${params.sample_id}"
     label 'process_low'
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -122,7 +122,7 @@ process SupportCellPhy {
 }
 
 process MutMapCellPhy {
-    tag "$params.sample_id"
+    tag "${params.sample_id}"
     label 'process_medium'
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?

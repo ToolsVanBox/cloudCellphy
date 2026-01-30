@@ -1,5 +1,5 @@
 process SupportMap {
-    tag "$params.sample_id"
+    tag "${params.sample_id}"
     label 'process_single'
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
