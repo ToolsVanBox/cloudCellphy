@@ -4,7 +4,7 @@ process MLSearchCellPhy {
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'docker://docker.io/zinno/cellphy:latest':
-        'europe-west4-docker.pkg.dev/pmc-gcp-box-d-pip-development/pipeline-containers/cloudcellphy@sha256:27dbdaa90d9eb69b86181f54205198e680824881bd206468579d01ad0fca25ba' }"
+         params.artifact_registry_path + '/cloudcellphy:1.0.1'}"
 
     publishDir "${params.out}/cellphy/mltrees", mode: 'copy'
 
@@ -51,7 +51,7 @@ process BootstrapsCellPhy {
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'docker://docker.io/zinno/cellphy:latest':
-        'europe-west4-docker.pkg.dev/pmc-gcp-box-d-pip-development/pipeline-containers/cloudcellphy@sha256:27dbdaa90d9eb69b86181f54205198e680824881bd206468579d01ad0fca25ba' }"
+        params.artifact_registry_path + '/cloudcellphy:1.0.1'}"
 
     publishDir "${params.out}/cellphy/bootstraps", mode: 'copy'
 
@@ -90,7 +90,7 @@ process SupportCellPhy {
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'docker://docker.io/zinno/cellphy:latest':
-        'europe-west4-docker.pkg.dev/pmc-gcp-box-d-pip-development/pipeline-containers/cloudcellphy@sha256:27dbdaa90d9eb69b86181f54205198e680824881bd206468579d01ad0fca25ba' }"
+        params.artifact_registry_path + '/cloudcellphy:1.0.1'}"
 
     publishDir "${params.out}/cellphy/support", mode: 'copy'
 
@@ -127,7 +127,7 @@ process MutMapCellPhy {
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'docker://docker.io/zinno/cellphy:latest':
-        'europe-west4-docker.pkg.dev/pmc-gcp-box-d-pip-development/pipeline-containers/cloudcellphy@sha256:27dbdaa90d9eb69b86181f54205198e680824881bd206468579d01ad0fca25ba' }"
+        params.artifact_registry_path + '/cloudcellphy:1.0.1'}"
 
     publishDir "${params.out}/cellphy/MutMap", mode: 'copy'
 
